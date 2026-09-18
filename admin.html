@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>body{background:#0f0f0f;color:white;font-family:Arial;padding:20px}input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none}button{padding:12px;border:none;border-radius:8px;background:red;color:white;font-weight:bold;width:100%;margin-top:10px}</style>
+</head><body>
+<h2>Secret Admin</h2>
+<div id="loginBox"><input id="adminPass" type="password" placeholder="Password = admin123"><button onclick="login()">LOGIN</button></div>
+<div id="panel" style="display:none;">
+<input id="title" placeholder="Movie Title">
+<input id="image" placeholder="Poster Image Link - this is PAUSE picture">
+<input id="link" placeholder="Video Link - direct mp4 / drive preview">
+<label style="font-size:12px;display:flex;gap:8px;margin:10px 0;"><input type="checkbox" id="consent" style="width:18px;">I own this video, all are 18+, consensual</label>
+<button onclick="addMovie()">SAVE PERMANENTLY</button>
+<p id="msg"></p><a href="/" style="color:red;">← Back Home</a></div>
+<script>
+const firebaseConfig = {apiKey:"AIzaSyBKp2r9i4qV4oN4K4K4K4K4K4K4",authDomain:"naijaleakxxx.firebaseapp.com",databaseURL:"https://naijaleakxxx-default-rtdb.firebaseio.com",projectId:"naijaleakxxx"};
+firebase.initializeApp(firebaseConfig);const db=firebase.database();
+function login(){if(document.getElementById('adminPass').value==='admin123'){document.getElementById('loginBox').style.display='none';document.getElementById('panel').style.display='block';}else alert('Wrong');}
+function addMovie(){if(!document.getElementById('consent').checked)return alert('Check consent');const d={title:document.getElementById('title').value,image:document.getElementById('image').value,link:document.getElementById('link').value,date:Date.now()};if(!d.title||!d.image||!d.link)return alert('Fill all');db.ref('movies').push(d).then(()=>{document.getElementById('msg').innerText='Saved!';});}
+</script>
+</body></html>
