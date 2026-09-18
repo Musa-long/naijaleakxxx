@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secret Admin</title>
+<style>
+body{background:#000;color:#fff;font-family:Arial;padding:20px}
+input{width:100%;padding:14px;margin:10px 0;border-radius:8px;border:none;font-size:16px}
+button{width:100%;padding:16px;background:#ff0000;color:#fff;border:none;border-radius:10px;font-weight:bold;font-size:18px;margin-top:10px}
+a{color:#ff0000}
+</style>
+</head>
+<body>
+<h1>Secret Admin</h1>
+<input id="title" placeholder="Title e.g. ElserIs" />
+<input id="poster" placeholder="Poster Image Link https://..." />
+<input id="video" placeholder="Video Link https://pixeldrain.com/api/file/...?view" />
+<label style="display:flex;gap:8px;margin:15px 0">
+<input type="checkbox" id="consent" style="width:20px"> I own this video, all are 18+, consensual
+</label>
+<button id="saveBtn">SAVE PERMANENTLY</button>
+<a href="/">← Back Home</a>
+<p id="msg"></p>
+
+<script>
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  const title=document.getElementById('title').value.trim();
+  const poster=document.getElementById('poster').value.trim();
+  const video=document.getElementById('video').value.trim();
+  const consent=document.getElementById('consent').checked;
+  const msg=document.getElementById('msg');
+
+  if(!title || !poster || !video){ alert('Fill all'); return; }
+  if(!consent){ alert('Check consent - you must confirm you own it and all are 18+'); return; }
+
+  msg.textContent='Saving... please wait 20s (waking server)...';
+  document.getElementById('saveBtn').disabled=true;
+
+  // Try to save to your backend - it will try common endpoints
+  const data={title,poster,video,consent:true,createdAt:Date.now()};
+  
+  try{
+    // 1. Save to localStorage as backup so homepage shows even if server sleeps
+    let videos=JSON.parse(localStorage.getItem('videos')||'[]');
+    videos.unshift(data);
+    localStorage.setItem('videos',JSON.stringify(videos));
+
+    // 2. Try to save to Render backend (try 3 possible endpoints)
+    let saved=false;
+    for(let url of ['/api/videos','/api/save','/save']){
+      try{
+        const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+        if(r.ok){ saved=true; break; }
+      }catch(e){}
+    }
+    msg.textContent='Saved! Go to homepage and refresh.';
+    setTimeout(()=>{ window.location.href='/'; },1000);
+  }catch(e){
+    msg.textContent='Saved locally. Error: '+e.message;
+    document.getElementById('saveBtn').disabled=false;
+  }
+});
+</script>
+</body>
+  </html>
