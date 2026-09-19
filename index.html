@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="6a97888e-site-verification" content="73d0f47cf526157ae5bcba1a027b8a0e">
+<title>NAIJA FLIX - Watch & Earn</title>
+<style>
+body{background:#000;color:#fff;font-family:sans-serif;margin:0}
+h1{color:red;text-align:center;padding:15px;margin:0;font-weight:900;position:sticky;top:0;background:#000;z-index:10}
+#videoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#111;border-radius:12px;overflow:hidden}
+.card video{width:100%;aspect-ratio:9/16;background:#000}
+.card p{padding:8px;margin:0;font-size:13px}
+.ad{ background:#111;border:1px dashed #333;border-radius:12px;padding:15px;text-align:center;color:#555;min-height:90px;display:flex;align-items:center;justify-content:center;grid-column: span 2;overflow:hidden }
+</style>
+<script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script>
+</head><body>
+<h1>NAIJA FLIX</h1>
+
+<div id="videoGrid"><div style="grid-column:span 2;text-align:center;padding:40px;color:#888">Loading...</div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1FLMaz4IMHn9iP4GOTnI34Qk0YhKYXtw",
+  authDomain: "loveflix-3092f.firebaseapp.com",
+  projectId: "loveflix-3092f",
+  storageBucket: "loveflix-3092f.firebasestorage.app",
+  messagingSenderId: "767919494263",
+  appId: "1:767919494263:web:ab97201d19619bf21ba272"
+};
+const db = getFirestore(initializeApp(firebaseConfig));
+
+async function load(){
+  const snap = await getDocs(query(collection(db,"videos"), orderBy("createdAt","desc")));
+  const grid = document.getElementById('videoGrid');
+  grid.innerHTML="";
+  let count=0;
+  snap.forEach(d=>{
+    const v=d.data();
+    grid.innerHTML+=`<div class="card"><video src="${v.video}" controls playsinline preload="metadata" poster="${v.poster}"></video><p>${v.title}</p></div>`;
+    count++;
+    if(count%2==0){
+      grid.innerHTML+=`<div class="ad"><ins class="eas6a97888e2" data-zoneid="6034414"></ins><script>(AdProvider = window.AdProvider || []).push({"serve": {}});<\/script></div>`;
+    }
+  });
+  // Push ads after loading
+  if(window.AdProvider){ AdProvider.push({"serve": {}}); }
+}
+load();
+</script>
+
+</body></html>
