@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="6a97888e-site-verification" content="73d0f47cf526157ae5bcba1a027b8a0e">
+<title>NAIJA FLIX</title>
+<style>
+body{background:#000;color:#fff;font-family:sans-serif;margin:0}
+h1{color:red;text-align:center;padding:15px;margin:0;font-weight:900}
+#videoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#111;border-radius:12px;overflow:hidden}
+.card video{width:100%;aspect-ratio:9/16;background:#000;object-fit:cover}
+.card p{padding:8px;margin:0;font-size:13px}
+</style>
+<script async src="https://a.magsrv.com/ad-provider.js"></script>
+</head><body>
+
+<h1>NAIJA FLIX</h1>
+
+<!-- IN-PAGE PUSH 6034440 - FLOATING, OUTSIDE GRID -->
+<ins class="eas6a97888e42" data-zoneid="6034440"></ins>
+<script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+
+<!-- BANNER CONTAINER -->
+<div style="text-align:center; padding:10px">
+<ins class="eas6a97888e2" data-zoneid="6034414"></ins>
+<script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+</div>
+
+<div id="videoGrid"><p style="grid-column:span 2;text-align:center;color:#888">Loading videos... please wait</p></div>
+
+<!-- POPUNDER 6034422 -->
+<script>
+(function() {
+    var adConfig = {"ads_host":"a.pemsrv.com","syndication_host":"s.pemsrv.com","idzone":6034422,"popup_fallback":false,"popup_force":false,"chrome_enabled":true,"new_tab":false,"frequency_period":60,"frequency_count":1,"trigger_method":3,"capping_enabled":true};
+    window.AdProvider=window.AdProvider||[];window.AdProvider.push({"serve":adConfig});
+})();
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyB1FLMaz4IMHn9iP4GOTnI34Qk0YhKYXtw",
+  authDomain: "loveflix-3092f.firebaseapp.com",
+  projectId: "loveflix-3092f",
+  storageBucket: "loveflix-3092f.firebasestorage.app",
+  messagingSenderId: "767919494263",
+  appId: "1:767919494263:web:ab97201d19619bf21ba272"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+async function load(){
+  const snap = await getDocs(query(collection(db,"videos"), orderBy("createdAt","desc")));
+  const grid = document.getElementById('videoGrid');
+  grid.innerHTML="";
+  snap.forEach(d=>{
+    const v=d.data();
+    grid.innerHTML += `<div class="card"><video src="${v.video}" controls playsinline preload="metadata"></video><p>${v.title||'Video'}</p></div>`;
+  });
+  if(snap.empty){ grid.innerHTML="<p style='grid-column:span 2;text-align:center'>No videos yet - upload in admin</p>"; }
+}
+load();
+</script>
+</body></html>
