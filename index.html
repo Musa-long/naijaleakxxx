@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NaijaLeakXXX</title>
+<!-- YOUR 2 ADSTERRA ADS - INCLUDED -->
+<script src="https://pl31425447.profitableratecpmnetwork.com/fa/9a/8a/fa9a8a9c92abac38365ddd159e75dd5c.js"></script>
+<script src="https://pl31425448.profitableratecpmnetwork.com/03/2f/af/032faf67db3429fcdabd9a1cd524febe.js"></script>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial}
+.top{background:#111;padding:12px;display:flex;justify-content:space-between;border-bottom:2px solid #ff0066;position:sticky;top:0;z-index:10}
+.logo{color:#ff0066;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#1a1a1a;border-radius:12px;overflow:hidden;position:relative;cursor:pointer}
+.poster{width:100%;height:240px;object-fit:cover;display:block;background:#222}
+.playBtn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff0066;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid #fff}
+.info{padding:8px}
+.info h3{font-size:12px;margin:0;height:32px;overflow:hidden}
+#modal{position:fixed;inset:0;background:#000;z-index:999;display:none;flex-direction:column}
+#modalTop{padding:12px;display:flex;justify-content:space-between;align-items:center;background:#111}
+#modalTop button{background:none;border:none;color:#fff;font-size:22px}
+#vp{width:100%;flex:1;background:#000}
+</style>
+</head>
+<body>
+<div class="top"><div class="logo">NAIJALEAKXXX</div><a href="admin.html" style="background:#ff0066;color:#fff;padding:6px 12px;border-radius:15px;text-decoration:none;font-size:12px">ADMIN</a></div>
+<div id="grid" class="grid">Loading videos...</div>
+
+<div id="modal">
+<div id="modalTop"><span id="vt"></span><button onclick="closeModal()">✕</button></div>
+<video id="vp" controls playsinline controlsList="nodownload" autoplay></video>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = {apiKey:"AIzaSyB1FLMaz4IMHn9iP4GOTnI34Qk0YhKYXtw",authDomain:"loveflix-3092f.firebaseapp.com",projectId:"loveflix-3092f",storageBucket:"loveflix-3092f.firebasestorage.app",messagingSenderId:"767919494263",appId:"1:767919494263:web:ab97201d19619bf21ba272"};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+async function load(){
+  const q = query(collection(db,"videos"), orderBy("createdAt","desc"));
+  const snap = await getDocs(q);
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  snap.forEach(s=>{
+    const v=s.data();
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<img class="poster" src="${v.poster}"><div class="playBtn">▶</div><div class="info"><h3>${v.title}</h3></div>`;
+    card.addEventListener('click', ()=>{
+      document.getElementById('modal').style.display='flex';
+      document.getElementById('vt').textContent=v.title;
+      const p=document.getElementById('vp');
+      p.src=v.video; p.load(); p.play().catch(()=>{});
+    });
+    grid.appendChild(card);
+  });
+}
+window.closeModal=()=>{
+  const m=document.getElementById('modal');
+  const p=document.getElementById('vp');
+  m.style.display='none'; p.pause(); p.removeAttribute('src'); p.load();
+}
+load();
+</script>
+</body>
+</html>
