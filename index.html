@@ -87,11 +87,18 @@ async function load(){
     grid.appendChild(card);
     count++;
     // Inject Native Ad after every 4 videos
-    if(count % 4 === 0){
-      const adCard=document.createElement('div');
-      adCard.className='native-card';
-      adCard.innerHTML=`<script async="async" data-cfasync="false" src="https://pl31429597.profitableratecpmnetwork.com/41671efbb30a59e9f3508695f4f7e120/invoke.js"><\/script><div id="container-41671efbb30a59e9f3508695f4f7e120"></div>`;
-      grid.appendChild(adCard);
+    if(count % 4 === 0){const adCard=document.createElement('div');
+adCard.className='native-card';
+const adContainer=document.createElement('div');
+adContainer.id='container-41671efbb30a59e9f3508695f4f7e120-'+count;
+const adScript=document.createElement('script');
+adScript.async=true;
+adScript.setAttribute('data-cfasync','false');
+adScript.src='https://pl31429597.profitableratecpmnetwork.com/41671efbb30a59e9f3508695f4f7e120/invoke.js';
+adCard.appendChild(adContainer);
+adCard.appendChild(adScript);
+grid.appendChild(adCard);
+      
     }
   });
 }
